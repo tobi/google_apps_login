@@ -11,9 +11,18 @@ module GoogleAppsProtection
     domain_endpoint = Endpoint % domain
     
     authenticate_with_open_id(domain_endpoint, DataRequest) do |result, identity_url, data|
-      
-      if result.successful?        
-        
+            
+      case result.status
+      when :missing
+        login_failed "Sorry, the OpenID server couldn't be found"
+      when :invalid
+        login_failed "Sorry, but this does not appear to be a valid OpenID"
+      when :canceled
+        login_failed "OpenID verification was canceled"
+      when :failed
+        login_failed "Sorry, the OpenID verification failed"
+      when :successful
+                
         profile = {
           :identity_url => identity_url,
           :email        => data[AxEmail].first,
@@ -29,16 +38,20 @@ module GoogleAppsProtection
         end
         
         if yield(profile)
+          login_successful
           true
         else
           login_failed(message)
           false
-        end
-      end      
+        end          
+      else
+        login_failed "Unknown OpenID error: #{result.status}"      
+      end
     end
   end
   
   def login_successful
+    logger.info("Login successful")
   end
   
   def login_failed(message = '')
@@ -47,6 +60,6 @@ module GoogleAppsProtection
   end
   
   
-  protected :login_failed, :login_successful
+  protected :login_failed, :login_successful, :authenticate_with_google_apps
   
 end

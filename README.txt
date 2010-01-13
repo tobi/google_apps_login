@@ -3,11 +3,13 @@ Google Apps Login:
 
 This plugin allows you to use your Google Apps for Domains accounts to protect areas of your 
 web apps such as internal admin areas. Great if your company or group is already using Google
-Apps. This may require a premium account. 
+Apps. 
 
 Requirements:
 -------------
-  
+
+
+  * This requires a premium Google Apps for domains account. Free accounts will not work :-(
   * pelle-ruby-openid (2.1.8) ( not sure if normal ruby-openid works, it's slightly out of date)
   * pelle's fork of openid_id_authentication plugin ( http://github.com/pelle/open_id_authentication )
 

@@ -5,6 +5,4 @@ require 'vendor/gapps_openid'
 OpenID.fetcher.ca_file = File.dirname(__FILE__) + '/lib/vendor/ca-bundle.crt'
 
 
-config.to_prepare do
-  ActionController::Base.send :include, GoogleAppsProtection
-end
+ActionController::Base.send :include, GoogleAppsProtection
